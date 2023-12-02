@@ -1,0 +1,13 @@
+{
+  "db": {
+    "port": 3306,
+    "host": "localhost",
+    "database": "example",
+    "user": "root",
+    "password": "root",
+    "ssl": { "rejectUnauthorized": false }
+  },
+  "folder": "./hashmig_example_migrations",
+  "table": "hashmig_example_migrations",
+  "silent": false
+}

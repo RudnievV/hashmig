@@ -1,0 +1,17 @@
+/test-reports
+/node_modules
+/npm-debug.log
+/index.d.ts
+package-lock.json
+.DS_Store
+.idea
+.vscode
+
+/coverage
+
+/hashmig_migrations
+
+/*.env
+/hashmig.config.json
+/hashmig.*.config.json
+
