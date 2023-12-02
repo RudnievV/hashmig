@@ -87,7 +87,7 @@ Example of configuration file `./hashmig.config.json`:
 
 ```
 
-Command for CI/CD:
+### Command for CI/CD:
 
 ```bash
 hashmig --config=hashmig.user.config.json run -n
