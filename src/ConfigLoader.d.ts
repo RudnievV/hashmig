@@ -5,5 +5,4 @@ export default class ConfigLoader {
     private static getConfigFromEnv;
     private static loadConfigFromFile;
     private static validateAndFillConfig;
-    private static valFromEnvString;
 }

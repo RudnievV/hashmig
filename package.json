@@ -1,6 +1,6 @@
 {
   "name": "@rsol/hashmig",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MySQL migrations by hash",
   "module": "dist/hashmig.mjs",
   "main": "dist/hashmig.js",
@@ -70,6 +70,7 @@
     "typescript": "^5.3.2"
   },
   "dependencies": {
+    "@rsol/pipe": "^1.0.0",
     "commander": "^11.1.0",
     "crypto": "^1.0.1",
     "dotenv": "^16.3.1",

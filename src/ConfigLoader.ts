@@ -1,7 +1,7 @@
 import { HashmigConfig } from './interfaces';
 import fs from 'fs';
 import { z } from 'zod';
-import Pipe from './Pipe';
+import Pipe from '@rsol/pipe';
 
 export default class ConfigLoader {
   private static fileName = './hashmig.config.json';
@@ -81,23 +81,29 @@ export default class ConfigLoader {
         silent: z.boolean()
       });
 
+      const pipe = new Pipe().addHandler(
+        'env',
+        () => (str, initialValueString) =>
+          process.env[str] || initialValueString
+      );
+
       const trueConfig = {
         db: {
-          port: this.valFromEnvString(`${config.db?.port || 3306}|toInt`),
-          host: this.valFromEnvString(config.db?.host || ''),
-          database: this.valFromEnvString(config.db?.database || ''),
-          user: this.valFromEnvString(config.db?.user || ''),
-          password: this.valFromEnvString(config.db?.password || ''),
+          port: pipe.pipe(`${config.db?.port || 3306}|toInt`),
+          host: pipe.pipe(config.db?.host || ''),
+          database: pipe.pipe(config.db?.database || ''),
+          user: pipe.pipe(config.db?.user || ''),
+          password: pipe.pipe(config.db?.password || ''),
           ssl: config.db.ssl
         },
-        folder: this.valFromEnvString(config.folder || ''),
-        table: this.valFromEnvString(config.table || ''),
+        folder: pipe.pipe(config.folder || ''),
+        table: pipe.pipe(config.table || ''),
         silent:
           config.silent === true
             ? true
             : config.silent === false
               ? false
-              : this.valFromEnvString(config.silent || 'false|toBool')
+              : pipe.pipe(config.silent || 'false|toBool')
       };
 
       return trueConfigSchema.parse(trueConfig) as HashmigConfig;
@@ -105,11 +111,5 @@ export default class ConfigLoader {
       console.error(e);
       return null;
     }
-  }
-
-  private static valFromEnvString(
-    str: string
-  ): string | number | boolean | undefined | null {
-    return new Pipe().pipeEnv(str);
   }
 }

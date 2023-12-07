@@ -2,11 +2,34 @@
 
 > HashMig MySQL migrations based on file hash
 
+CLI migrations tool for MySQL stored procedures and functions.
+Just add or change `*.sql` file in the folder `hashmig_migrations` (or from the `folder` parameter of the configuration file) and run `hashmig run` command.
+HashMig will execute new migrations and save them in table `hashmig_migrations` (or from `table` parameter of the configuration file).
+It allows easy work with stored procedures and functions in MySQL. Any developer from your team can change the file; if another developer changes the same, it can be easily merged as usual git merge.
+Also, it allows you to find who and when changed corresponding stored procedure
+
+Typical `*.sql` file for stored procedure:
+
+```sql
+DROP PROCEDURE IF EXISTS `some_procedure`;
+-- NEW_COMMAND
+CREATE  PROCEDURE `some_procedure`()
+BEGIN
+    SELECT 1;
+END;
+```
+
+_As you can see, you can use `-- NEW_COMMAND` comment to separate commands in one file_
+
+The result of the command `hashmig run`:
+
+![img.png](img.png)
+
 ## Table of Contents
 
-*   [Install](#install)
-*   [Usage](#usage)
-*   [License](#license)
+- [Install](#install)
+- [Usage](#usage)
+- [License](#license)
 
 ## Install
 
@@ -51,6 +74,7 @@ To configure, you can use `./hashmig.config.json` (see `./hashmig.example.config
   HASHMIG_TABLE - name of table with migrations
   HASHMIG_SILENT - disable logger
 ```
+
 Command `run`:
 
 ```bash
@@ -58,6 +82,7 @@ hashmig help run
 ```
 
 Result:
+
 ```bash
 Usage: hashmig run [options]
 
@@ -84,7 +109,6 @@ Example of configuration file `./hashmig.config.json`:
   "table": "hashmig_example_migrations",
   "silent": false
 }
-
 ```
 
 ### Command for CI/CD:
@@ -92,7 +116,6 @@ Example of configuration file `./hashmig.config.json`:
 ```bash
 hashmig --config=hashmig.user.config.json run -n
 ```
-
 
 ## License
 
