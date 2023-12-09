@@ -1,6 +1,8 @@
 # HashMig
 
-> HashMig MySQL migrations based on file hash
+> HashMig MySQL migrations based on file hash.
+> 
+> See https://medium.com/p/0a970b72ba3e
 
 CLI migrations tool for MySQL stored procedures and functions.
 Just add or change `*.sql` file in the folder `hashmig_migrations` (or from the `folder` parameter of the configuration file) and run `hashmig run` command.

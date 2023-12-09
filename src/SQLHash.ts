@@ -18,30 +18,7 @@ const SQLHash = (sql: string, marker = '_@#$^*_') => {
       i++;
       return `${marker}${i}${marker}`;
     })
-    .replace('    ', ' ')
-    .replace('    ', ' ')
-    .replace('    ', ' ')
-    .replace('    ', ' ')
-    .replace('    ', ' ')
-    .replace('    ', ' ')
-    .replace('    ', ' ')
-    .replace('    ', ' ')
-    .replace('    ', ' ')
-    .replace('   ', ' ')
-    .replace('   ', ' ')
-    .replace('  ', ' ')
-    .replace('  ', ' ')
-    .replace('  ', ' ')
-    .replace('  ', ' ')
-    .replace('  ', ' ')
-    .replace('  ', ' ')
-    .replace('  ', ' ')
-    .replace('  ', ' ')
-    .replace('  ', ' ')
-    .replace('  ', ' ')
-    .replace('  ', ' ')
-    .replace('  ', ' ')
-    .replace('  ', ' ');
+    .replace(/\s{2,}/g, ' ');
 
   parts.forEach((part, i) => {
     source = source.replace(`${marker}${i}${marker}`, part);

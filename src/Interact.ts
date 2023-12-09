@@ -36,7 +36,7 @@ export default class Interact {
       .description(
         'CLI migrations tool for MySQL stored procedures and functions'
       )
-      .version('1.0.0')
+      .version('1.0.2')
       .option(
         '-c, --config <string>',
         'Path to config file',
