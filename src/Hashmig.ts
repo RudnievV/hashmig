@@ -245,12 +245,17 @@ ${source}`;
     return map;
   }
 
-  public async getMigrationsToRun(): Promise<Map<string, string>> {
-    const dbMigrations = await this.getMigrations().then((rows) =>
-      rows.reduce((map, row) => {
-        map.set(row.Hash, row.FileName);
-        return map;
-      }, new Map())
+  public async getMigrationsToRun(debug = false): Promise<Map<string, string>> {
+    const [dbMigrations, dbFileMigration] = await this.getMigrations().then(
+      (rows) =>
+        rows.reduce(
+          ([map, mapFile], row) => {
+            map.set(row.Hash, row.FileName);
+            mapFile.set(row.FileName, row.Hash);
+            return [map, mapFile];
+          },
+          [new Map(), new Map()]
+        )
     );
     const filesMap = await this.getMigrationsFiles();
 
@@ -259,7 +264,14 @@ ${source}`;
         // this.logger.log(`     - ${file} already migrated`);
         filesMap.delete(hash);
       } else {
-        this.logger.log(`     + ${file} will be migrated`);
+        const msg =
+          `     + ${file} will be migrated` +
+          (debug
+            ? ` (file hash ${hash} != db hash ${
+                dbFileMigration.has(file) ? dbFileMigration.get(file) : '-'
+              })`
+            : '');
+        this.logger.log(msg);
       }
     }
 

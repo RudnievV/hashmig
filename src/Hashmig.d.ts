@@ -29,7 +29,7 @@ export default class Hashmig {
     private initFunction;
     private getHash;
     getMigrationsFiles(): Promise<Map<string, string>>;
-    getMigrationsToRun(): Promise<Map<string, string>>;
+    getMigrationsToRun(debug?: boolean): Promise<Map<string, string>>;
     runMigrations(files: string[]): Promise<void>;
     private migrateFile;
     clear(): Promise<void>;

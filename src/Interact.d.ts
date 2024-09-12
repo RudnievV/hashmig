@@ -2,6 +2,7 @@ export default class Interact {
     private hashmig;
     private logger;
     private isInteractive;
+    private debug;
     constructor();
     init(configFileName?: string): void;
     main: () => Promise<void>;

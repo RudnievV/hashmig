@@ -11,6 +11,7 @@ export default class Interact {
   private logger: Logger;
 
   private isInteractive = true;
+  private debug = false;
 
   constructor() {
     this.logger = new Logger();
@@ -36,7 +37,7 @@ export default class Interact {
       .description(
         'CLI migrations tool for MySQL stored procedures and functions'
       )
-      .version('1.0.2')
+      .version('1.0.3')
       .option(
         '-c, --config <string>',
         'Path to config file',
@@ -66,9 +67,11 @@ To configure, you can use \`./hashmig.config.json\` (see \`./hashmig.example.con
       .command('run')
       .description('Execute migrations')
       .option('-n, --noninteractive', 'Non-interactive mode', false)
+      .option('-d, --debug', 'Debug mode', false)
       .action((options) => {
-        const { noninteractive = false } = options;
+        const { noninteractive = false, debug = false } = options;
         this.isInteractive = !noninteractive;
+        this.debug = debug;
 
         (async () => {
           // ----------------------------------- Table -----------------------------------
@@ -224,7 +227,7 @@ To configure, you can use \`./hashmig.config.json\` (see \`./hashmig.example.con
   };
 
   runMigrations = async () => {
-    const migrations = await this.hashmig.getMigrationsToRun();
+    const migrations = await this.hashmig.getMigrationsToRun(this.debug);
 
     if (migrations.size === 0) {
       this.logger.success('--- All migrations already completed');
