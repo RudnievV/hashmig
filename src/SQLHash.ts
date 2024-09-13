@@ -4,7 +4,7 @@ const SQLHash = (sql: string, marker = '_@#$^*_') => {
   const parts: string[] = [];
   let i = -1;
   let source = sql
-    .replace(/\n/g, ' ')
+    .replace(/[\n\r]/g, ' ')
     .replace(/\t/g, ' ')
     .replace(/\\'/g, `${marker}single${marker}`)
     .replace(/\\"/g, `${marker}double${marker}`)

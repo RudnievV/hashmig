@@ -1,6 +1,6 @@
 {
   "name": "@rsol/hashmig",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "MySQL migrations by hash",
   "module": "dist/hashmig.mjs",
   "main": "dist/hashmig.js",
