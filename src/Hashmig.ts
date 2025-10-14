@@ -119,7 +119,7 @@ export default class Hashmig {
         `
     SELECT COLUMN_NAME
       FROM INFORMATION_SCHEMA.COLUMNS
-      WHERE TABLE_NAME = '${this.folder}' AND COLUMN_NAME = '${ColumnName}'
+      WHERE TABLE_NAME = '${this.table}' AND COLUMN_NAME = '${ColumnName}'
     `
       )
       .then((results) => results as { COLUMN_NAME: string }[])
