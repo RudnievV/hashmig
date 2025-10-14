@@ -9,5 +9,6 @@
   },
   "folder": "./hashmig_example_migrations",
   "table": "hashmig_example_migrations",
+  "author": "user",
   "silent": false
 }

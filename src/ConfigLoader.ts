@@ -33,6 +33,7 @@ export default class ConfigLoader {
       },
       folder: process.env.HASHMIG_FOLDER || './hashmig_migrations',
       table: process.env.HASHMIG_TABLE || 'hashmig_migrations',
+      author: process.env.HASHMIG_AUTHOR || 'unknown',
       silent: process.env.HASHMIG_SILENT === 'true'
     };
 
@@ -43,7 +44,9 @@ export default class ConfigLoader {
     if (!fs.existsSync(`${this.fileName}`)) {
       return null;
     }
-    const json = fs.readFileSync(`${this.fileName}`).toString();
+    const json = fs
+      .readFileSync(`${this.fileName}`, { encoding: 'utf8' })
+      .toString();
     return this.validateAndFillConfig(JSON.parse(json));
   }
 
@@ -61,6 +64,7 @@ export default class ConfigLoader {
       }),
       folder: z.string(),
       table: z.string(),
+      author: z.string().optional(),
       silent: z.string().or(z.boolean())
     });
 
@@ -78,6 +82,7 @@ export default class ConfigLoader {
         }),
         folder: z.string(),
         table: z.string(),
+        author: z.string().optional(),
         silent: z.boolean()
       });
 
@@ -98,6 +103,7 @@ export default class ConfigLoader {
         },
         folder: pipe.pipe(config.folder || ''),
         table: pipe.pipe(config.table || ''),
+        author: pipe.pipe(config.author || 'unknown'),
         silent:
           config.silent === true
             ? true

@@ -149,6 +149,7 @@ To configure, you can use \`./hashmig.config.json\` (see \`./hashmig.example.con
     const isMigrationsTableExists =
       await this.hashmig.isMigrationsTableExists();
     if (isMigrationsTableExists) {
+      await this.hashmig.alterMigrationsTableV1_0_6();
       return true;
     }
 

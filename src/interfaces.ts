@@ -54,4 +54,5 @@ export interface HashmigConfig {
   table?: string;
   silent?: boolean;
   logger?: LoggerEngine;
+  author?: string;
 }

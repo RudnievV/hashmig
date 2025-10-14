@@ -4,6 +4,7 @@ const SQLHash = (sql: string, marker = '_@#$^*_') => {
   const parts: string[] = [];
   let i = -1;
   let source = sql
+    .replace(/\r\n/g, ' ')
     .replace(/[\n\r]/g, ' ')
     .replace(/\t/g, ' ')
     .replace(/\\'/g, `${marker}single${marker}`)
@@ -18,13 +19,16 @@ const SQLHash = (sql: string, marker = '_@#$^*_') => {
       i++;
       return `${marker}${i}${marker}`;
     })
-    .replace(/\s{2,}/g, ' ');
+    .replace(/\s+/g, ' ');
 
   parts.forEach((part, i) => {
     source = source.replace(`${marker}${i}${marker}`, part);
   });
 
-  return crypto.createHash('sha256').update(source).digest('hex');
+  return crypto
+    .createHash('sha256')
+    .update(source.trim(), 'utf8')
+    .digest('hex');
 };
 
 export default SQLHash;

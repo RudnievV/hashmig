@@ -21,6 +21,8 @@ export default class Hashmig {
   private readonly database: string | undefined;
   private readonly table: string;
 
+  private readonly author: string;
+
   private logger: LoggerEngine = {
     log: () => {},
     info: () => {},
@@ -34,6 +36,8 @@ export default class Hashmig {
 
     this.table = options?.table || 'hashmig_migrations';
     this.database = options?.db?.database || process.env.DB_SELECT;
+
+    this.author = options?.author || process.env.HASHMIG_AUTHOR || 'unknown';
 
     this.initLogger(options?.logger, options?.silent);
 
@@ -107,6 +111,29 @@ export default class Hashmig {
       .query(`SHOW CREATE FUNCTION ${name}`)
       .then((results) => results as DBFunctionSourceRow[])
       .then((results) => results[0]['Create Function']);
+  }
+
+  private async isMigrationsTableUpdated(ColumnName: string): Promise<boolean> {
+    return this.db
+      .query(
+        `
+    SELECT COLUMN_NAME
+      FROM INFORMATION_SCHEMA.COLUMNS
+      WHERE TABLE_NAME = '${this.folder}' AND COLUMN_NAME = '${ColumnName}'
+    `
+      )
+      .then((results) => results as { COLUMN_NAME: string }[])
+      .then((results) => results.length > 0);
+  }
+
+  public async alterMigrationsTableV1_0_6(): Promise<void> {
+    const isUpdated = await this.isMigrationsTableUpdated('Author');
+    if (isUpdated) {
+      return;
+    }
+    await this.db.query(`ALTER TABLE hashmig_migrations
+        ADD Author varchar(100) DEFAULT '-' NULL,
+        ADD SourceCode LONGTEXT NULL;`);
   }
 
   public async isMigrationsTableExists(): Promise<boolean> {
@@ -304,14 +331,16 @@ ${source}`;
   }
 
   private async migrateFile(file: string) {
-    const source = fs.readFileSync(`${this.folder}/${file}`).toString();
+    const source = fs
+      .readFileSync(`${this.folder}/${file}`, { encoding: 'utf8' })
+      .toString();
     const hash = this.getHash(source);
 
     await this.runFileSql(source);
     await this.db.query(
-      `INSERT INTO ${this.table} (FileName, Hash, Type)
-                         VALUES (?, ?, 'function')`,
-      [file, hash]
+      `INSERT INTO ${this.table} (FileName, Hash, Type, Author, SourceCode)
+                         VALUES (?, ?, 'procedure', ?, ?)`,
+      [file, hash, this.author, source]
     );
   }
 

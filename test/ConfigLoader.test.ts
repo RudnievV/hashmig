@@ -25,6 +25,10 @@ describe('ConfigLoader', () => {
     expect(fileConfig?.silent).toEqual(jsonConfig.silent);
   });
 
+  it('should have same values as config', () => {
+    expect(fileConfig?.author).toEqual(jsonConfig.author);
+  });
+
   it('should load config from env', () => {
     expect(envConfig).not.toBeNull();
   });

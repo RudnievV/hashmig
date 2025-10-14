@@ -4,6 +4,7 @@ export default class Hashmig {
     private readonly folder;
     private readonly database;
     private readonly table;
+    private readonly author;
     private logger;
     constructor(options?: HashmigConfig);
     private initLogger;
@@ -20,6 +21,8 @@ export default class Hashmig {
     }[]>;
     getProcedureSource(name: string): Promise<string>;
     getFunctionSource(name: string): Promise<string>;
+    private isMigrationsTableUpdated;
+    alterMigrationsTableV1_0_6(): Promise<void>;
     isMigrationsTableExists(): Promise<boolean>;
     createMigrationsTable(): Promise<any>;
     getMigrations(): Promise<DBMigrationRow[]>;

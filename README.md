@@ -75,6 +75,7 @@ To configure, you can use `./hashmig.config.json` (see `./hashmig.example.config
   HASHMIG_FOLDER - path to folder with migrations
   HASHMIG_TABLE - name of table with migrations
   HASHMIG_SILENT - disable logger
+  HASHMIG_AUTHOR - author of execution - default 'unknown'
 ```
 
 Command `run`:
@@ -109,6 +110,7 @@ Example of configuration file `./hashmig.config.json`:
   },
   "folder": "./hashmig_example_migrations",
   "table": "hashmig_example_migrations",
+  "author": "John",
   "silent": false
 }
 ```
